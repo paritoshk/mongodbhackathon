@@ -74,6 +74,7 @@ def start_chat(user):
         st.subheader("Chat Interface")
         handle_chat()
     st.sidebar.title("User Preferences")
+    display_preferences(user)
 
 def display_news():
     
@@ -100,9 +101,6 @@ def display_news():
         st.write(details['Blurb'])
         st.markdown(f"**Impact On Your Life:** {details['Impact']}")
     # To display this specific news item:
-    st.header(news['Public Transportation Fare Increase']['Title'])
-    st.write(news['Public Transportation Fare Increase']['Blurb'])
-    st.markdown(f"**Impact On Your Life:** {news['Public Transportation Fare Increase']['Impact']}")
 
 def handle_chat():
     st.text_area("Type your questions here...", height=300, key="chat_area")
