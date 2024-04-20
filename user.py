@@ -1,9 +1,9 @@
+from typing import Any
 class User:
     """
     Represents a comprehensive user profile, including personal, economic, family,
     and lifestyle details, as well as geographical information for detailed analysis
     of legislative impacts.
-
     Attributes:
         name (str): User's full name for personalization of communications.
         email (str): User's email for notifications and newsletters.
@@ -19,7 +19,6 @@ class User:
         hobbies (list): List of hobbies or activities that might be affected by new laws.
         zip_code (str): Postal code for precise geographical localization.
     """
-
     def __init__(self, name: str, email: str, date_of_birth: str, employment_status: str,
                  industry: str, education_level: str, home_ownership: str, number_of_dependents: int,
                  marital_status: str, health_status: str, political_alignment: str, hobbies: list, zip_code: str):
@@ -36,7 +35,6 @@ class User:
         self.political_alignment = political_alignment
         self.hobbies = hobbies
         self.zip_code = zip_code
-
     def update_profile(self, **kwargs) -> None:
         """
         Update profile attributes based on key-value pairs provided as arguments.
@@ -46,16 +44,14 @@ class User:
         """
         for key, value in kwargs.items():
             setattr(self, key, value)
-
     def delete_profile(self) -> None:
         """
         Simulate deletion of this user profile, adhering to privacy and data protection laws.
         """
-        print(f"Profile for {self.name} has been deleted.")
+        print(f"Profile for {self.name} has been deleted.")        
 class UserActivities:
     """
     Tracks dynamic user activities and expenses that may change over time.
-
     Attributes:
         user (User): The User object this activities profile is associated with.
         drives_car (bool): Whether the user drives a car.
@@ -66,13 +62,11 @@ class UserActivities:
         monthly_transport_expense (float): Monthly expenditure on transport including tolls and gas.
         monthly_liquor_expense (float): Monthly expenditure on liquor.
     """
-
     def __init__(self, user: User, drives_car: bool, uses_toll_bridges: bool, eats_out: bool,
                  monthly_dining_out_expense: float, monthly_grocery_expense: float,
-                 monthly_transport_expense: float, monthly_liquor_expense: float):
+                 monthly_transport_expense: float):
         """
         Initialize a new UserActivities instance linked to a specific User.
-
         Args:
             user (User): The User object to which these activities are related.
             drives_car (bool): Indicator if the user drives a car.
@@ -90,18 +84,14 @@ class UserActivities:
         self.monthly_dining_out_expense = monthly_dining_out_expense
         self.monthly_grocery_expense = monthly_grocery_expense
         self.monthly_transport_expense = monthly_transport_expense
-        self.monthly_liquor_expense = monthly_liquor_expense
-
     def update_activities(self, **kwargs: Any) -> None:
         """
         Update activities based on key-value pairs provided as arguments.
-
         Args:
             **kwargs (Any): Arbitrary keyword arguments corresponding to activity attributes.
         """
         for key, value in kwargs.items():
             setattr(self, key, value)
-
 # Example Usage
 if __name__ == "__main__":
     jane = User(
@@ -119,8 +109,8 @@ if __name__ == "__main__":
         hobbies=["Hiking", "Photography"],
         zip_code="94043"
     )
-    user.update_profile(employment_status="Self-employed")
-    print(f"Updated employment status for {user.name}: {user.employment_status}")
+    jane.update_profile(employment_status="Self-employed")
+    print(f"Updated employment status for {jane.name}: {jane.employment_status}")
     john_activities = UserActivities(
         user=jane,
         drives_car=True,
@@ -128,4 +118,4 @@ if __name__ == "__main__":
         eats_out=True,
         monthly_dining_out_expense=300.0,
         monthly_grocery_expense=500.0,
-        monthly_transport_expense=200.
+        monthly_transport_expense=200)
