@@ -1,5 +1,10 @@
 import streamlit as st
 
+
+# To display this specific news item:
+
+
+
 class User:
     """
     Represents a comprehensive user profile, detailing personal, economic, family, and lifestyle
@@ -50,7 +55,7 @@ def main():
         ensuring you're well-informed and prepared for any changes.
     """)
     
-    user_name = st.text_input("Please enter your name to continue:")
+    user_name = st.text_input("Please enter your name and press [ENTER] to continue:")
     
     if user_name:
         user = User(name=user_name)
@@ -59,7 +64,7 @@ def main():
 
 def start_chat(user):
     # Layout: three columns (News, Chat, Preferences)
-    news_col, chat_col, prefs_col = st.columns([1, 2, 1])
+    chat_col, news_col = st.columns([1, 1])
 
     with news_col:
         st.subheader("Latest News")
@@ -68,21 +73,78 @@ def start_chat(user):
     with chat_col:
         st.subheader("Chat Interface")
         handle_chat()
-
-    with prefs_col:
-        st.subheader(f"{user.name}'s Preferences")
-        display_preferences(user)
+    st.sidebar.title("User Preferences")
 
 def display_news():
-    st.write("1. New tax reforms announced.")
-    st.write("2. Updates on healthcare legislation.")
-    st.write("3. Latest in housing and property laws.")
+    
+    news = {
+        'SB 532': {
+            'Title': 'San Francisco Bay Area Toll Increase Act',
+            'Blurb': 'This act introduces a toll rate increase for vehicles crossing state-owned toll bridges in the San Francisco Bay area, with the goal of funding transit operators facing financial shortfalls and improving transit services.',
+            'Impact': 'If you frequently commute across these bridges, expect to budget an extra $1.50 per crossing from 2024 to 2028. This increase will fund public transportation, aiming to enhance the reliability and cleanliness of transit services.'
+        },
+        'SB 478': {
+            'Title': 'Fair Advertising and Consumer Protection Act',
+            'Blurb': 'The act prohibits advertising or displaying goods and services at a price that excludes mandatory fees or charges, aiming to eliminate misleading price advertisements.',
+            'Impact': 'Next time you shop, the price you see will be more transparent, including all mandatory fees, which means no more surprises at checkout. This applies to goods, services, and vehicle rentals.'
+        }
+    }
+
+    news['Public Transportation Fare Increase'] = {
+        'Title': 'SFMTA Fare Increase Due to Extended Parking Meter Hours Block',
+        'Blurb': 'Due to the Board of Supervisors blocking the implementation of extended parking meter hours, SFMTA Board is set to vote on a fare increase that could affect 90% of riders.',
+        'Impact': 'If you rely on public transportation in SF, prepare for a potential 14% fare increase over the next two years. The decision is a response to budgetary constraints and aims to keep services operational and maintain quality.'
+    }
+    for bill_id, details in news.items():
+        st.header(details['Title'])
+        st.write(details['Blurb'])
+        st.markdown(f"**Impact On Your Life:** {details['Impact']}")
+    # To display this specific news item:
+    st.header(news['Public Transportation Fare Increase']['Title'])
+    st.write(news['Public Transportation Fare Increase']['Blurb'])
+    st.markdown(f"**Impact On Your Life:** {news['Public Transportation Fare Increase']['Impact']}")
 
 def handle_chat():
     st.text_area("Type your questions here...", height=300, key="chat_area")
 
-def display_preferences(user):
-    st.write("Preferences area. Customize your news feed and notifications.")
+def display_preferences(user: User):
+    st.sidebar.info("""
+        **Why set your preferences?**
+        By providing your interests and concerns, our bot can tailor the information 
+        and advice to your specific needs, ensuring you get the most relevant and 
+        personalized experience possible.
+    """)
+    st.sidebar.subheader(f"{user.name}'s Preferences")
+
+    employment_status = st.sidebar.text_input("Employment Status", user.employment_status)
+    industry = st.sidebar.text_input("Industry", user.industry)
+    education_level = st.sidebar.text_input("Education Level", user.education_level)
+    home_ownership = st.sidebar.text_input("Home Ownership Status", user.home_ownership)
+    number_of_dependents = st.sidebar.number_input("Number of Dependents", value=user.number_of_dependents, step=1)
+    marital_status = st.sidebar.text_input("Marital Status", user.marital_status)
+    health_status = st.sidebar.text_input("Health Status", user.health_status)
+    political_alignment = st.sidebar.selectbox("Political Alignment", ['Liberal', 'Moderate', 'Conservative'], index=0)
+    hobbies = st.sidebar.text_input("Hobbies (comma-separated)", ', '.join(user.hobbies))
+    zip_code = st.sidebar.text_input("ZIP Code", user.zip_code)
+
+    if st.sidebar.button("Update Preferences"):
+        # Update the user's preferences
+        user.update_profile(
+            employment_status=employment_status,
+            industry=industry,
+            education_level=education_level,
+            home_ownership=home_ownership,
+            number_of_dependents=int(number_of_dependents),  # Convert to int as number_input returns a float
+            marital_status=marital_status,
+            health_status=health_status,
+            political_alignment=political_alignment,
+            hobbies=hobbies.split(', '),
+            zip_code=zip_code
+        )
+        st.sidebar.success("Your preferences have been updated!")
+
+
+
 
 if __name__ == "__main__":
     main()
