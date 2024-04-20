@@ -1,9 +1,6 @@
-import pandas as pd
-import json
-import numpy as np
 import openai
-from llama_index.core import SimpleDirectoryReader
-from pdfplumber import open as open_pdf
+import os
+import fitz  # PyMuPDF
 
 # Configuration for the OpenAI client
 client = openai.OpenAI(
@@ -11,33 +8,57 @@ client = openai.OpenAI(
     api_key="ZxMnS0dQqCWmjJHchufihHS1e40Y3aIP92LTeraQYuAyoubW",
 )
 
-# Function to get embeddings using the API
-def get_embedding(query):
+def extract_title(page_content):
+    # Assume the title is the first non-empty line of text
+    for line in page_content.split('\n'):
+        if line.strip():
+            return line.strip()
+    return 'Title Not Found'  # Return a default placeholder if no title could be found
+
+def get_embedding(text):
     try:
-        query_emb = client.embeddings.create(
+        response = client.embeddings.create(
             model="thenlper/gte-large",
-            input=f"{query}"
+            input=text
         )
-        return query_emb.data[0].embedding
+        return response.data[0].embedding
     except Exception as e:
         print(f"An error occurred while fetching the embedding: {e}")
         return None
 
-# Define a custom PDF reader
-class PDFReader:
-    def load_data(self, file_path, extra_info=None):
-        with open_pdf(file_path) as pdf:
-            text = " ".join([page.extract_text() for page in pdf.pages if page.extract_text()])
-        return [text]
+def read_documents(folder_path):
+    document_dict = {}
+    embeddings_dict = {}
+    for filename in os.listdir(folder_path):
+        if filename.endswith(".pdf"):
+            file_path = os.path.join(folder_path, filename)
+            try:
+                # Open the PDF file
+                doc = fitz.open(file_path)
+                # Extract text from the entire document
+                full_text = ""
+                for page in doc:
+                    full_text += page.get_text()
+                # Extract text from the first page for the title
+                if len(doc) > 0:
+                    first_page_text = doc[0].get_text()
+                    title = extract_title(first_page_text)
+                else:
+                    title = "No content"
+                    first_page_text = ""
+                document_dict[title] = full_text
+                # Optionally, get embeddings for the full document text or first page text
+                embeddings_dict[title] = get_embedding(full_text)
+            except Exception as e:
+                print(f"Failed to read {filename}: {str(e)}")
+            finally:
+                doc.close()  # Ensure the document is closed after processing
+    return document_dict, embeddings_dict
 
-# Instantiate the directory reader with PDF file support
-reader = SimpleDirectoryReader(input_dir="./data", file_extractor={".pdf": PDFReader()})
-
-# Read documents using the custom PDF reader
-documents = reader.load_data()
-
-# Get embeddings for each document and handle them as needed
-embeddings = [get_embedding(doc) for doc in documents]
-# Example of handling embeddings - simply printing them here. You can replace this with database insertion or any other processing.
-for embedding in embeddings:
-    print(embedding)
+# Example usage
+folder_path = './data'  # Update with the path to your PDF documents
+documents, embeddings = read_documents(folder_path)
+for title, content in documents.items():
+    print(f"Title: {title}\nContent: {content[:500]}...")  # Print the title and the first 500 characters of the content
+    if embeddings[title]:
+        print(f"Embedding: {embeddings[title][:10]}...")  # Print the first 10 elements of the embedding
