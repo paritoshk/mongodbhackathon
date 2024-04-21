@@ -1,5 +1,5 @@
 import streamlit as st
-
+import vectorsearch
 
 # To display this specific news item:
 
@@ -56,11 +56,12 @@ def main():
     """)
     
     user_name = st.text_input("Please enter your name and press [ENTER] to continue:")
-    
-    if user_name:
-        user = User(name=user_name)
-        if st.button("Start Chat", key="start_chat"):
-            start_chat(user)
+    handle_chat()
+    # if user_name:
+    #     user = User(name=user_name)
+    #     print(user_name)
+    #     if st.button("Start Chat", key="start_chat"):
+    #         start_chat(user)
 
 def start_chat(user):
     # Layout: three columns (News, Chat, Preferences)
@@ -103,7 +104,9 @@ def display_news():
     # To display this specific news item:
 
 def handle_chat():
-    st.text_area("Type your questions here...", height=300, key="chat_area")
+    input = st.text_area("Type your questions here...", height=300, key="chat_area")
+    if(len(input) > 0):
+        print(vectorsearch.query(input))
 
 def display_preferences(user: User):
     st.sidebar.info("""
