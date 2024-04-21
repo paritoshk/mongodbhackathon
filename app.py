@@ -120,6 +120,9 @@ def handle_chat(user):
             my political alignment is {palignment}
             my hobbies is {hobbies}
             my zip code is {zipcode}
+
+            Answer the following question (you must give me a response):
+
             """.format(username=user.name, estatus=user.employment_status, industry=user.industry, edulevel=user.education_level, home=user.home_ownership, ndependents=user.number_of_dependents, mstatus=user.marital_status, 
                     healthstatus=user.health_status, palignment=user.political_alignment, hobbies=user.hobbies, zipcode=user.zip_code)
             input = input + user_preference_str

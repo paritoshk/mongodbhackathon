@@ -46,7 +46,7 @@ def query(text):
 
   Settings.embed_model = embed_model
 
-  llm = MistralAI(model="mistral-large-latest", temperature=0.1, api_key=os.environ["MISTRAL_API_KEY"])
+  llm = MistralAI(model="mistral-large-latest", temperature=0.08, api_key=os.environ["MISTRAL_API_KEY"])
 
   Settings.llm = llm
 
@@ -70,4 +70,4 @@ def query(text):
   return str(response)
 
 def agent():
-  llm = MistralAI(model="mistral-large-latest", temperature=0.1, api_key=os.environ["MISTRAL_API_KEY"])
+  llm = MistralAI(model="mistral-large-latest", temperature=0.08, api_key=os.environ["MISTRAL_API_KEY"])
