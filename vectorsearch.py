@@ -38,7 +38,7 @@ def query(text):
   # collection.delete_many({})
 
   # Load documents
-  documents = SimpleDirectoryReader("/Users/kawaitsoi/Desktop/Desktop - KA’s MacBook Pro/mdb-hack/data").load_data()
+  # documents = SimpleDirectoryReader("/Users/kawaitsoi/Desktop/Desktop - KA’s MacBook Pro/mdb-hack/data").load_data()
 
   embed_model = OpenAIEmbedding(
               model = "thenlper/gte-large",
