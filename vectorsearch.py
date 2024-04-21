@@ -70,5 +70,4 @@ def query(text):
   return response
 
 def agent():
-  MISTRAL_API_KEY = "NWgcT32rNOMOFZbvR7RUShAtxGdQnqdl"
-  llm = MistralAI(model="mistral-large-latest", temperature=0.1, api_key=MISTRAL_API_KEY)
+  llm = MistralAI(model="mistral-large-latest", temperature=0.1, api_key=os.environ["MISTRAL_API_KEY"])
