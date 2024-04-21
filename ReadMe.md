@@ -32,8 +32,8 @@ Our solution, an intelligent legislative impact app, is designed for efficacy an
 
 +-----------------+         +------------------+         +-------------------+
 |                 |  Read   |                  | Process |                   |
-| LlamaIndex      +-------->+ Fireworks AI     +-------->+ MongoDB Atlas     |
-| Document Reader |         | Embedding Model  |         | Cluster           |
+| LlamaIndex +      +-------->+ Fireworks AI     +-------->+ MongoDB Atlas     |
+| Document Reader |         | Embedding Model  |         | Cluster (Document)           |
 |                 |<--------+                  |<--------+                   |
 +-----------------+  Update |                  |  Store  |                   |
                             +------------------+         +-------------------+
