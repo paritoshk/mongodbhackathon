@@ -67,5 +67,4 @@ streamlit run app.py
 ---
 
 This project is a testament to how AI can bridge the gap between complex legislation and the average person, promoting a well-informed and engaged community.
-```
 
