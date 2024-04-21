@@ -30,6 +30,30 @@ Our solution, an intelligent legislative impact app, is designed for efficacy an
 - **AI Model**: Fireworks AI (`gte-large` model hosted on Fireworks AI by Alibaba)
 - **Document Processing**: LlamaIndex  and agents for RAG Contex Enhacement and document readers + Mongo
 
++-----------------+         +------------------+         +-------------------+
+|                 |  Read   |                  | Process |                   |
+| LlamaIndex      +-------->+ Fireworks AI     +-------->+ MongoDB Atlas     |
+| Document Reader |         | Embedding Model  |         | Cluster           |
+|                 |<--------+                  |<--------+                   |
++-----------------+  Update |                  |  Store  |                   |
+                            +------------------+         +-------------------+
+                                   ^                             |
+                                   |                             |
+                                   |                             v
+                            +------------------+         +-------------------+
+                            |                  |  Fetch  |                   |
+                            | User Feedback    +<--------+ Streamlit Frontend|
+                            | Processing       |         |                   |
+                            +------------------+         +-------------------+
+
+
+## Description:
+- LlamaIndex Document Reader: This component reads and parses legislative documents, converting them into a format that can be further processed.
+- Fireworks AI Embedding Model: This service processes the parsed documents from LlamaIndex, creating embeddings that capture the semantic essence of the text.
+MongoDB Atlas Cluster: The processed embeddings are stored in MongoDB, which acts as the persistent data store for the application.
+- Streamlit Frontend: This is the user interface that displays information to the user, collects user feedback, and sends it back to the processing services.
+User Feedback Processing: A dedicated component or functionality within the Fireworks AI or Streamlit layer that processes user feedback to update the document analysis models, thus improving accuracy over time.
+
 ## Overview
 
 The app parses complex legislative documents to extract meaningful data, processes this data into user-friendly formats, and stores the information in a MongoDB database. The processed data is then used to generate personalized insights, delivered through a Streamlit-based frontend.
