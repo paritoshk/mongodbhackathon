@@ -71,11 +71,11 @@ def query(text):
   )
   vector_store_context = StorageContext.from_defaults(vector_store=atlas_vector_search)
 
-  vector_store_index = VectorStoreIndex.from_documents(
-     documents, storage_context=vector_store_context, show_progress=True
-  )
+  # vector_store_index = VectorStoreIndex.from_documents(
+  #    documents, storage_context=vector_store_context, show_progress=True
+  # )
 
-  # vector_store_index = VectorStoreIndex.from_vector_store(vector_store=atlas_vector_search)
+  vector_store_index = VectorStoreIndex.from_vector_store(vector_store=atlas_vector_search)
 
   response = vector_store_index.as_query_engine().query(text)
   print(response)
