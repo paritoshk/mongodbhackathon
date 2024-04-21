@@ -40,7 +40,7 @@ def query(text):
   embed_model = OpenAIEmbedding(
               model = "thenlper/gte-large",
               api_base="https://api.fireworks.ai/inference/v1",
-              api_key="ZxMnS0dQqCWmjJHchufihHS1e40Y3aIP92LTeraQYuAyoubW",
+              api_key=os.environ["FIREWORKS_EMBED_API_KEY"],
               embed_batch_size=100
           )
 
