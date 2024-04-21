@@ -56,26 +56,28 @@ def main():
     """)
     
     user_name = st.text_input("Please enter your name and press [ENTER] to continue:")
-    handle_chat()
-    # if user_name:
-    #     user = User(name=user_name)
-    #     print(user_name)
-    #     if st.button("Start Chat", key="start_chat"):
-    #         start_chat(user)
-
-def start_chat(user):
+    if user_name:
+        user = User(name=user_name)
+        print(user_name)
     # Layout: three columns (News, Chat, Preferences)
     chat_col, news_col = st.columns([1, 1])
 
     with news_col:
         st.subheader("Latest News")
         display_news()
-
+    output = ""
     with chat_col:
         st.subheader("Chat Interface")
-        handle_chat()
+        if not user_name:
+            user = User(name="Ed")
+            output = handle_chat(user)
+        else:
+            output = handle_chat(user)
+        if len(output) > 0:
+            st.text_area("Answer:", value=output, height=300)
     st.sidebar.title("User Preferences")
-    display_preferences(user)
+    if user:
+        display_preferences(user)
 
 def display_news():
     
@@ -103,10 +105,27 @@ def display_news():
         st.markdown(f"**Impact On Your Life:** {details['Impact']}")
     # To display this specific news item:
 
-def handle_chat():
-    input = st.text_area("Type your questions here...", height=300, key="chat_area")
+def handle_chat(user):
+    input = st.text_area("Type your questions here...", height=150, key="chat_area")
     if(len(input) > 0):
-        print(vectorsearch.query(input))
+        if (user):
+            user_preference_str = """
+            Given that {username} employment status is: {estatus}
+            My industry is {industry},
+            my education level is {edulevel}
+            my home ownership status is {home}
+            my nuber of dependents is {ndependents}
+            my marital status is {mstatus}
+            my health status is {healthstatus}
+            my political alignment is {palignment}
+            my hobbies is {hobbies}
+            my zip code is {zipcode}
+            """.format(username=user.name, estatus=user.employment_status, industry=user.industry, edulevel=user.education_level, home=user.home_ownership, ndependents=user.number_of_dependents, mstatus=user.marital_status, 
+                    healthstatus=user.health_status, palignment=user.political_alignment, hobbies=user.hobbies, zipcode=user.zip_code)
+            input = input + user_preference_str
+        return vectorsearch.query(input)
+    return ""
+
 
 def display_preferences(user: User):
     st.sidebar.info("""

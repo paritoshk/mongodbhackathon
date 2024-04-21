@@ -67,7 +67,7 @@ def query(text):
 
   response = vector_store_index.as_query_engine().query(text)
   print(response)
-  return response
+  return str(response)
 
 def agent():
   llm = MistralAI(model="mistral-large-latest", temperature=0.1, api_key=os.environ["MISTRAL_API_KEY"])
