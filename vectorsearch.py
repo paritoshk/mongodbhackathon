@@ -1,6 +1,7 @@
 import pymongo
 import time
 from llama_index.embeddings.openai import OpenAIEmbedding
+from llama_index.agent.openai import OpenAIAgent
 import os
 from llama_index.core import SimpleDirectoryReader, VectorStoreIndex, StorageContext, Settings
 from llama_index.vector_stores.mongodb import MongoDBAtlasVectorSearch
@@ -18,7 +19,7 @@ def get_mongo_client(mongo_uri):
     return None
 
 def query(text):
-  mongo_uri = "mongodb+srv://edtsoi430:UvPrmTtrKyDdtly4@cluster0.zgxme0y.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+  mongo_uri = os.environ["MONGO_URI"]
 
   if not mongo_uri:
     print("MONGO_URI not set in environment variables")
@@ -45,8 +46,7 @@ def query(text):
 
   Settings.embed_model = embed_model
 
-  MISTRAL_API_KEY = "NWgcT32rNOMOFZbvR7RUShAtxGdQnqdl"
-  llm = MistralAI(model="mistral-large-latest", temperature=0.1, api_key=MISTRAL_API_KEY)
+  llm = MistralAI(model="mistral-large-latest", temperature=0.1, api_key=os.environ["MISTRAL_API_KEY"])
 
   Settings.llm = llm
 
@@ -68,3 +68,7 @@ def query(text):
   response = vector_store_index.as_query_engine().query(text)
   print(response)
   return response
+
+def agent():
+  MISTRAL_API_KEY = "NWgcT32rNOMOFZbvR7RUShAtxGdQnqdl"
+  llm = MistralAI(model="mistral-large-latest", temperature=0.1, api_key=MISTRAL_API_KEY)
