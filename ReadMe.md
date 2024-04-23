@@ -29,7 +29,7 @@ Our solution, an intelligent legislative impact app, is designed for efficacy an
 - **Database**: MongoDB Atlas Cluster
 - **AI Model**: Fireworks AI (`gte-large` model hosted on Fireworks AI by Alibaba)
 - **Document Processing**: LlamaIndex  and agents for RAG Contex Enhacement and document readers + Mongo
-
+```
 +-----------------+         +------------------+         +-------------------+
 |                 |  Read   |                  | Process |                   |
 | LlamaIndex +      +-------->+ Fireworks AI     +-------->+ MongoDB Atlas     |
@@ -46,7 +46,7 @@ Our solution, an intelligent legislative impact app, is designed for efficacy an
                             | Processing       |         |                   |
                             +------------------+         +-------------------+
 
-
+```
 ## Description:
 - LlamaIndex Document Reader: This component reads and parses legislative documents, converting them into a format that can be further processed.
 - Fireworks AI Embedding Model: This service processes the parsed documents from LlamaIndex, creating embeddings that capture the semantic essence of the text.
